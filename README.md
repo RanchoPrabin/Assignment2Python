@@ -18,7 +18,7 @@ def encrypt_text(text, shift1, shift2):
             if 'A' <= ch <= 'M':
                 shift = shift1
                 result += chr((ord(ch) - ord('A') - shift) % 26 + ord('A'))
-             #### 😂😂 Cant we use 65 in place of ord('A') AND cant we write direcct value of them instead of kaing longer codes
+             #### 😂😂 Cant we use 65 in place of ord('A') AND cant we write direcct value of them instead of making longer codes
             else:
                 shift = shift2 ** 2
                 result += chr((ord(ch) - ord('A') + shift) % 26 + ord('A'))
