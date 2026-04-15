@@ -1,155 +1,127 @@
-# Assignment2Python
-#Team work for doing assignement
-# ast we have to define a function to encrypt  text
-qustion 1
-def encrypt_text(text, shift1, shift2):
-    result = ""
+"""
+HIT137 Assignment 2 – Question 1
+Encryption and Decryption Program
+Author: Netra Rajjoshi
+"""
 
-    for ch in text:
-        if ch.islower():
-            if 'a' <= ch <= 'm':
-                shift = shift1 * shift2
-                result += chr((ord(ch) - ord('a') + shift) % 26 + ord('a'))
-            else:
-                shift = shift1 + shift2
-                result += chr((ord(ch) - ord('a') - shift) % 26 + ord('a'))
+import string
+import os
 
-        elif ch.isupper():
-            if 'A' <= ch <= 'M':
-                shift = shift1
-                result += chr((ord(ch) - ord('A') - shift) % 26 + ord('A'))
-             #### 😂😂 Cant we use 65 in place of ord('A') AND cant we write direcct value of them instead of making longer codes
-            else:
-                shift = shift2 ** 2
-                result += chr((ord(ch) - ord('A') + shift) % 26 + ord('A'))
+# Get the folder where the python file is located
+base_path = os.path.dirname(os.path.abspath(__file__))
 
-        else:
-            result += ch
-
-    return result
+# File paths (same folder as script)
+raw_file = os.path.join(base_path, "rawtext.txt")
+encrypted_file = os.path.join(base_path, "encrypted_text.txt")
+decrypted_file = os.path.join(base_path, "decrypted_text.txt")
 
 
-def decrypt_text(text, shift1, shift2):
-    result = ""
-
-    for ch in text:
-        if ch.islower():
-            if 'a' <= ch <= 'm':
-                shift = shift1 * shift2
-                result += chr((ord(ch) - ord('a') - shift) % 26 + ord('a'))
-            else:
-                shift = shift1 + shift2
-                result += chr((ord(ch) - ord('a') + shift) % 26 + ord('a'))
-
-        elif ch.isupper():
-            if 'A' <= ch <= 'M':
-                shift = shift1
-                result += chr((ord(ch) - ord('A') + shift) % 26 + ord('A'))
-            else:
-                shift = shift2 ** 2
-                result += chr((ord(ch) - ord('A') - shift) % 26 + ord('A'))
-
-        else:
-            result += ch
-
-    return result
+# Function to shift characters
+def shift_char(c, shift, alphabet):
+    index = alphabet.index(c)
+    new_index = (index + shift) % 26
+    return alphabet[new_index]
 
 
+# Encryption function
 def encrypt_file(shift1, shift2):
-    with open("raw_text.txt", "r") as f:
+
+    with open(raw_file, "r", encoding="utf-8") as f:
         text = f.read()
 
-    encrypted = encrypt_text(text, shift1, shift2)
+    encrypted = ""
 
-    with open("encrypted_text.txt", "w") as f:
+    for ch in text:
+
+        if ch.islower():
+
+            if 'a' <= ch <= 'm':
+                shift = shift1 * shift2
+                encrypted += shift_char(ch, shift, string.ascii_lowercase)
+
+            else:
+                shift = -(shift1 + shift2)
+                encrypted += shift_char(ch, shift, string.ascii_lowercase)
+
+        elif ch.isupper():
+
+            if 'A' <= ch <= 'M':
+                shift = -shift1
+                encrypted += shift_char(ch, shift, string.ascii_uppercase)
+
+            else:
+                shift = shift2 ** 2
+                encrypted += shift_char(ch, shift, string.ascii_uppercase)
+
+        else:
+            encrypted += ch
+
+    with open(encrypted_file, "w", encoding="utf-8") as f:
         f.write(encrypted)
 
 
+# Decryption function
 def decrypt_file(shift1, shift2):
-    with open("encrypted_text.txt", "r") as f:
+
+    with open(encrypted_file, "r", encoding="utf-8") as f:
         text = f.read()
 
-    decrypted = decrypt_text(text, shift1, shift2)
+    decrypted = ""
 
-    with open("decrypted_text.txt", "w") as f:
+    for ch in text:
+
+        if ch.islower():
+
+            if 'a' <= ch <= 'm':
+                shift = -(shift1 * shift2)
+                decrypted += shift_char(ch, shift, string.ascii_lowercase)
+
+            else:
+                shift = (shift1 + shift2)
+                decrypted += shift_char(ch, shift, string.ascii_lowercase)
+
+        elif ch.isupper():
+
+            if 'A' <= ch <= 'M':
+                shift = shift1
+                decrypted += shift_char(ch, shift, string.ascii_uppercase)
+
+            else:
+                shift = -(shift2 ** 2)
+                decrypted += shift_char(ch, shift, string.ascii_uppercase)
+
+        else:
+            decrypted += ch
+
+    with open(decrypted_file, "w", encoding="utf-8") as f:
         f.write(decrypted)
 
 
-def verify():
-    with open("raw_text.txt", "r") as f1, open("decrypted_text.txt", "r") as f2:
-        if f1.read() == f2.read():
-            print("Decryption successful")
-        else:
-            print("Decryption failed")
+# Verify if original and decrypted files match
+def verify_files():
 
+    with open(raw_file, "r", encoding="utf-8") as f1:
+        original = f1.read()
 
-if __name__ == "__main__":
-    shift1 = int(input("Enter shift1: "))
-    shift2 = int(input("Enter shift2: "))
+    with open(decrypted_file, "r", encoding="utf-8") as f2:
+        decrypted = f2.read()
 
-    encrypt_file(shift1, shift2)
-    decrypt_file(shift1, shift2)
-    verify()
-
-#####Similar code slightly different concept
-def encrypt_text(text,shift1, shift2):
-    result=""
-    for txt in text:
-        if 'a'<=txt<='m':
-            shift=shift1+shift2
-            result+= chr((ord(txt)-97+shift)%26 + 97)
-        elif 'n'<=txt<='z':
-            shift=shift1*shift2
-            result+= chr((ord(txt)-97-shift)%26+97)
-        elif 'A'<=txt<='M':
-            shift=shift1
-            result+= chr((ord(txt)-65-shift)%26 +65)
-        elif 'N'<=txt<='Z':
-            shift= shift2*2
-            result+= chr((ord(txt)-65+shift)%26+65)
-        else:
-            result+= txt
-    return result
-
-def decrypt_text(text,shift1, shift2):
-    result=""
-    for txt in text:
-        if 'a'<=txt<='m':
-            shift=shift1+shift
-            result+= chr((ord(txt)-97-shift)%26 + 97)
-        elif 'n'<=txt<='z':
-            shift=shift1*shift2
-            result+= chr((ord(txt)-97+shift)%26+97)
-        elif 'A'<=txt<='M':
-            shift=shift1
-            result+= chr((ord(txt)-65+shift)%26 +65)
-        elif 'N'<=txt<='Z':
-            shift= shift2*2
-            result+= chr((ord(txt)-65-shift)%26+65)
-        else:
-            result+= txt
-    return result
-
-def check(original, decrypted):
-    if original==decrypted:
-        print("Given text is descrypted correctly")
+    if original == decrypted:
+        print("Decryption successful: Files match")
     else:
-        print("Given text failed to descrypt")
+        print("Decryption failed: Files do not match")
 
-def main():
-    shift1=int(input("Enter the value of shift1:"))
-    shift2= int(input("Enter the vaklude of shift2:"))
-    with open("raw_text.txt","r") as f:
-        raw= f.read()
 
-    encrypted= encrypt_text(raw, shift1, shift2)
-    with open("encrypted_text.txt","w") as f:
-        f.write(encrypted)
+# Main program
+print("=== Text Encryption Program ===")
 
-    decrypted= decrypt_text(encrypted, shift1, shift2)
-    with open("decrypted_text.txt","w") as f:
-        f.write(decrypted)
-        check(raw, decrypted)
-if __name__ == "__main__":
-    main()
-    
+shift1 = int(input("Enter shift1 value: "))
+shift2 = int(input("Enter shift2 value: "))
+
+encrypt_file(shift1, shift2)
+print("Encryption completed")
+
+decrypt_file(shift1, shift2)
+print("Decryption completed")
+
+verify_files()
