@@ -125,5 +125,40 @@ print("Decryption completed")
 verify_files()
 
 
+
+
 ## question 2
+import re
+import os
+# automatically detect folder of the script
+base_path = os.path.dirname(os.path.abspath(_file_))
+imput_file = os.path.join(base_path,"sample_input.txt")
+output_file = os.path.join(base_path,"output.txt")
+#---------
+# TOKENIZER
+#----------
+def tokenize(exp):
+token pattern = r'\d+|[()+\-*/]'
+    parts = re.findall(token_pattern, expr)
+
+    tokens = []
+
+    for p in parts:
+
+        if p.isdigit():
+            tokens.append(("NUM", p))
+
+        elif p in "+-*/":
+            tokens.append(("OP", p))
+
+        elif p == "(":
+            tokens.append(("LPAREN", p))
+
+        elif p == ")":
+            tokens.append(("RPAREN", p))
+
+    tokens.append(("END", ""))
+
+    return tokens
+
 
