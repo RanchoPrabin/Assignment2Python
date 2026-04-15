@@ -1,8 +1,6 @@
-"""
-HIT137 Assignment 2 – Question 1
-Encryption and Decryption Program
-Author: Netra Rajjoshi
-"""
+
+#HIT137 Assignment 2 – Question 1
+#Encryption and Decryption Program
 
 import string
 import os
