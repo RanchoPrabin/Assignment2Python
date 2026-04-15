@@ -270,3 +270,92 @@ def evaluate(node):
         return l / r
 
 
+        
+
+Assignment 2 done by jeetika 
+here I am writing the code that i will be using to do the assignment 
+
+ def shift_char(char, shift):
+    """Shift a character within alphabet range using wrap-around."""
+    if 'a' <= char <= 'z':
+        start = ord('a')
+        return chr((ord(char) - start + shift) % 26 + start)
+    elif 'A' <= char <= 'Z':
+        start = ord('A')
+        return chr((ord(char) - start + shift) % 26 + start)
+    return char
+
+    Encryption Function
+    def encrypt_text(text, shift1, shift2):
+    encrypted = ""
+
+    for ch in text:
+        if 'a' <= ch <= 'm':
+            encrypted += shift_char(ch, shift1 * shift2)
+        elif 'n' <= ch <= 'z':
+            encrypted += shift_char(ch, -(shift1 + shift2))
+        elif 'A' <= ch <= 'M':
+            encrypted += shift_char(ch, -shift1)
+        elif 'N' <= ch <= 'Z':
+            encrypted += shift_char(ch, shift2 ** 2)
+        else:
+            encrypted += ch
+
+    return encrypted  
+
+Decryption Function
+    
+def decrypt_text(text, shift1, shift2):
+    decrypted = ""
+
+    for ch in text:
+        if 'a' <= ch <= 'm':
+            decrypted += shift_char(ch, -(shift1 * shift2))
+        elif 'n' <= ch <= 'z':
+            decrypted += shift_char(ch, shift1 + shift2)
+        elif 'A' <= ch <= 'M':
+            decrypted += shift_char(ch, shift1)
+        elif 'N' <= ch <= 'Z':
+            decrypted += shift_char(ch, -(shift2 ** 2))
+        else:
+            decrypted += ch
+
+    return decrypted
+
+Decryption Function
+
+def decrypt_text(text, shift1, shift2):
+    decrypted = ""
+
+    for ch in text:
+        if 'a' <= ch <= 'm':
+            decrypted += shift_char(ch, -(shift1 * shift2))
+        elif 'n' <= ch <= 'z':
+            decrypted += shift_char(ch, shift1 + shift2)
+        elif 'A' <= ch <= 'M':
+            decrypted += shift_char(ch, shift1)
+        elif 'N' <= ch <= 'Z':
+            decrypted += shift_char(ch, -(shift2 ** 2))
+        else:
+            decrypted += ch
+
+    return decrypted
+
+
+
+File Encryption Function
+
+def encrypt_file(input_file, output_file, shift1, shift2):
+    with open(input_file, "r", encoding="utf-8") as f:
+        raw_text = f.read()
+
+    encrypted = encrypt_text(raw_text, shift1, shift2)
+
+    with open(output_file, "w", encoding="utf-8") as f:
+        f.write(encrypted)
+
+    print(f"Encrypted text written to {output_file}")
+    
+Verification Function
+
+
