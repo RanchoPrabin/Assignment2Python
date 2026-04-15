@@ -160,5 +160,113 @@ token pattern = r'\d+|[()+\-*/]'
     tokens.append(("END", ""))
 
     return tokens
+     -----------------------------
+# PARSER
+# -----------------------------
+class Parser:
+
+    def __init__(self, tokens):
+        self.tokens = tokens
+        self.pos = 0
+
+    def current(self):
+        return self.tokens[self.pos]
+
+    def eat(self):
+        self.pos += 1
+
+    def parse(self):
+        return self.expr()
+
+    def expr(self):
+
+        node = self.term()
+
+        while self.current()[1] in ("+", "-"):
+            op = self.current()[1]
+            self.eat()
+            right = self.term()
+            node = (op, node, right)
+
+        return node
+
+    def term(self):
+
+        node = self.factor()
+
+        while self.current()[1] in ("*", "/"):
+            op = self.current()[1]
+            self.eat()
+            right = self.factor()
+            node = (op, node, right)
+
+        return node
+
+    def factor(self):
+
+        token = self.current()
+
+        if token[0] == "NUM":
+            self.eat()
+            return int(token[1])
+
+        if token[1] == "-":
+            self.eat()
+            operand = self.factor()
+            return ("neg", operand)
+
+        if token[0] == "LPAREN":
+            self.eat()
+            node = self.expr()
+            self.eat()
+            return node
+
+        raise Exception("Parse error")
+
+
+# -----------------------------
+# TREE STRING
+# -----------------------------
+def tree_to_string(node):
+
+    if isinstance(node, int):
+        return str(node)
+
+    if node[0] == "neg":
+        return f"(neg {tree_to_string(node[1])})"
+
+    op, left, right = node
+    return f"({op} {tree_to_string(left)} {tree_to_string(right)})"
+
+
+# -----------------------------
+# EVALUATOR
+# -----------------------------
+def evaluate(node):
+
+    if isinstance(node, int):
+        return node
+
+    if node[0] == "neg":
+        return -evaluate(node[1])
+
+    op, left, right = node
+
+    l = evaluate(left)
+    r = evaluate(right)
+
+    if op == "+":
+        return l + r
+
+    if op == "-":
+        return l - r
+
+    if op == "*":
+        return l * r
+
+    if op == "/":
+        if r == 0:
+            raise Exception("Divide by zero")
+        return l / r
 
 
