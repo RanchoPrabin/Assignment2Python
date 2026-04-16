@@ -357,5 +357,38 @@ def encrypt_file(input_file, output_file, shift1, shift2):
     print(f"Encrypted text written to {output_file}")
     
 Verification Function
+def verify_files(original_file, decrypted_file):
+    with open(original_file, "r", encoding="utf-8") as f:
+        original_text = f.read()
 
+    with open(decrypted_file, "r", encoding="utf-8") as f:
+        decrypted_text = f.read()
+
+    if original_text == decrypted_text:
+        print("Verification successful: Decrypted text matches the original.")
+    else:
+        print("Verification failed: Decrypted text does NOT match the original.")
+
+Main Function
+def main():
+    try:
+        shift1 = int(input("Enter shift1: "))
+        shift2 = int(input("Enter shift2: "))
+    except ValueError:
+        print("Please enter valid integer values for shift1 and shift2.")
+        return
+
+    raw_file = "raw_text.txt"
+    encrypted_file = "encrypted_text.txt"
+    decrypted_file = "decrypted_text.txt"
+
+    encrypt_file(raw_file, encrypted_file, shift1, shift2)
+    decrypt_file(encrypted_file, decrypted_file, shift1, shift2)
+    verify_files(raw_file, decrypted_file)
+
+    Program Execution
+if __name__ == "__main__":
+    main()
+    
+        
 
