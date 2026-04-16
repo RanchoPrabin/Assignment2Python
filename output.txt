@@ -24,8 +24,8 @@ Tokens: [LPAREN:(] [NUM:10] [OP:-] [NUM:2] [RPAREN:)] [OP:*] [NUM:3] [OP:+] [OP:
 Result: 22
 
 Input: 3 @ 5
-Tree: 3
-Tokens: [NUM:3] [NUM:5] [END]
+Tree: ERROR
+Tokens: ERROR
 Result: ERROR
 
 
