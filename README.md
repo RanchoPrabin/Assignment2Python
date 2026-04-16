@@ -136,9 +136,14 @@ imput_file = os.path.join(base_path,"sample_input.txt")
 output_file = os.path.join(base_path,"output.txt")
 #---------
 # TOKENIZER
-#----------
-def tokenize(exp):
-token pattern = r'\d+|[()+\-*/]'
+# -----------------------------
+def tokenize(expr):
+
+    # check for invalid characters
+    if re.search(r'[^\d+\-*/()\s]', expr):
+        raise Exception("Invalid character")
+
+    token_pattern = r'\d+|[()+\-*/]'
     parts = re.findall(token_pattern, expr)
 
     tokens = []
@@ -160,7 +165,6 @@ token pattern = r'\d+|[()+\-*/]'
     tokens.append(("END", ""))
 
     return tokens
-     -----------------------------
 # PARSER
 # -----------------------------
 class Parser:
