@@ -26,7 +26,8 @@ Result: 22
 Input: 3 @ 5
 Tree: 3
 Tokens: [NUM:3] [NUM:5] [END]
-Result: 3
+Result: ERROR
+
 
 Input: 1 / 0
 Tree: ERROR
