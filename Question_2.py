@@ -1,8 +1,6 @@
 """
 HIT137 Assignment 2 – Question 2
 Expression Evaluator
-Author: Netra Rajjoshi
-"""
 
 import re
 import os
@@ -15,10 +13,13 @@ input_file = os.path.join(base_path, "sample_input.txt")
 output_file = os.path.join(base_path, "output.txt")
 
 
-# -----------------------------
 # TOKENIZER
 # -----------------------------
 def tokenize(expr):
+
+    # check for invalid characters
+    if re.search(r'[^\d+\-*/()\s]', expr):
+        raise Exception("Invalid character")
 
     token_pattern = r'\d+|[()+\-*/]'
     parts = re.findall(token_pattern, expr)
@@ -42,7 +43,6 @@ def tokenize(expr):
     tokens.append(("END", ""))
 
     return tokens
-
 
 # -----------------------------
 # PARSER
