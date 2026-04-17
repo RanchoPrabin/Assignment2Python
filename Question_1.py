@@ -1,12 +1,12 @@
 
-##HIT137 Assignment 2 Question 
-##Encryption and Decryption Program
+###HIT137 Assignment 2 Question 
+###Encryption and Decryption Program
 
 
 import os
 
 
-# FILE PATH SETUP
+### FILE PATH SETUP
 
 base_path = os.path.dirname(os.path.abspath(__file__))
 
@@ -16,7 +16,7 @@ decrypted_file = os.path.join(base_path, "decrypted_text.txt")
 
 
 
-# ENCRYPTION
+### ENCRYPTION
 def encrypt_char(ch, shift1, shift2): #Function
 
     if ch.islower():
@@ -49,7 +49,7 @@ def encrypt_char(ch, shift1, shift2): #Function
         return ch
 
 
-# DECRYPTION
+### DECRYPTION
 
 def decrypt_char(ch, shift1, shift2): #Function
 
