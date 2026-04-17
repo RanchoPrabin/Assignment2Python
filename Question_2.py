@@ -1,6 +1,6 @@
-"""
-HIT137 Assignment 2 – Question 2
-Expression Evaluator
+
+## Question 2
+
 
 import re
 import os
@@ -14,7 +14,7 @@ output_file = os.path.join(base_path, "output.txt")
 
 
 # TOKENIZER
-# -----------------------------
+
 def tokenize(expr):
 
     # check for invalid characters
@@ -44,9 +44,8 @@ def tokenize(expr):
 
     return tokens
 
-# -----------------------------
 # PARSER
-# -----------------------------
+
 class Parser:
 
     def __init__(self, tokens):
@@ -108,9 +107,8 @@ class Parser:
         raise Exception("Parse error")
 
 
-# -----------------------------
 # TREE STRING
-# -----------------------------
+
 def tree_to_string(node):
 
     if isinstance(node, int):
@@ -123,9 +121,9 @@ def tree_to_string(node):
     return f"({op} {tree_to_string(left)} {tree_to_string(right)})"
 
 
-# -----------------------------
+
 # EVALUATOR
-# -----------------------------
+
 def evaluate(node):
 
     if isinstance(node, int):
@@ -154,9 +152,8 @@ def evaluate(node):
         return l / r
 
 
-# -----------------------------
 # MAIN PROCESS
-# -----------------------------
+
 def evaluate_file():
 
     if not os.path.exists(input_file):
