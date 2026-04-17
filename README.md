@@ -326,7 +326,7 @@ def decrypt_text(text, shift1, shift2):
 
     return decrypted
 
-Decryption Function
+##Decryption Function
 
 def decrypt_text(text, shift1, shift2):
     decrypted = ""
@@ -347,7 +347,7 @@ def decrypt_text(text, shift1, shift2):
 
 
 
-File Encryption Function
+##File Encryption Function
 
 def encrypt_file(input_file, output_file, shift1, shift2):
     with open(input_file, "r", encoding="utf-8") as f:
@@ -373,7 +373,7 @@ def verify_files(original_file, decrypted_file):
     else:
         print("Verification failed: Decrypted text does NOT match the original.")
 
-Main Function
+##Main Function
 def main():
     try:
         shift1 = int(input("Enter shift1: "))
@@ -390,7 +390,7 @@ def main():
     decrypt_file(encrypted_file, decrypted_file, shift1, shift2)
     verify_files(raw_file, decrypted_file)
 
-    Program Execution
+   ## Program Execution
 if __name__ == "__main__":
     main()
     
