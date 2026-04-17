@@ -144,16 +144,23 @@ verify_files()
 
 
 
-## question 2
+
+## Question 2
+
+
 import re
 import os
+
+
 # automatically detect folder of the script
-base_path = os.path.dirname(os.path.abspath(_file_))
-imput_file = os.path.join(base_path,"sample_input.txt")
-output_file = os.path.join(base_path,"output.txt")
-#---------
+base_path = os.path.dirname(os.path.abspath(__file__))
+
+input_file = os.path.join(base_path, "sample_input.txt")
+output_file = os.path.join(base_path, "output.txt")
+
+
 # TOKENIZER
-# -----------------------------
+
 def tokenize(expr):
 
     # check for invalid characters
@@ -182,8 +189,9 @@ def tokenize(expr):
     tokens.append(("END", ""))
 
     return tokens
+
 # PARSER
-# -----------------------------
+
 class Parser:
 
     def __init__(self, tokens):
@@ -245,9 +253,8 @@ class Parser:
         raise Exception("Parse error")
 
 
-# -----------------------------
 # TREE STRING
-# -----------------------------
+
 def tree_to_string(node):
 
     if isinstance(node, int):
@@ -260,9 +267,9 @@ def tree_to_string(node):
     return f"({op} {tree_to_string(left)} {tree_to_string(right)})"
 
 
-# -----------------------------
+
 # EVALUATOR
-# -----------------------------
+
 def evaluate(node):
 
     if isinstance(node, int):
@@ -291,125 +298,63 @@ def evaluate(node):
         return l / r
 
 
-        
+# MAIN PROCESS
 
-Assignment 2 done by jeetika 
-here I am writing the code that i will be using to do the assignment 
+def evaluate_file():
 
- def shift_char(char, shift):
-    """Shift a character within alphabet range using wrap-around."""
-    if 'a' <= char <= 'z':
-        start = ord('a')
-        return chr((ord(char) - start + shift) % 26 + start)
-    elif 'A' <= char <= 'Z':
-        start = ord('A')
-        return chr((ord(char) - start + shift) % 26 + start)
-    return char
-
-    Encryption Function
-    def encrypt_text(text, shift1, shift2):
-    encrypted = ""
-
-    for ch in text:
-        if 'a' <= ch <= 'm':
-            encrypted += shift_char(ch, shift1 * shift2)
-        elif 'n' <= ch <= 'z':
-            encrypted += shift_char(ch, -(shift1 + shift2))
-        elif 'A' <= ch <= 'M':
-            encrypted += shift_char(ch, -shift1)
-        elif 'N' <= ch <= 'Z':
-            encrypted += shift_char(ch, shift2 ** 2)
-        else:
-            encrypted += ch
-
-    return encrypted  
-
-Decryption Function
-    
-def decrypt_text(text, shift1, shift2):
-    decrypted = ""
-
-    for ch in text:
-        if 'a' <= ch <= 'm':
-            decrypted += shift_char(ch, -(shift1 * shift2))
-        elif 'n' <= ch <= 'z':
-            decrypted += shift_char(ch, shift1 + shift2)
-        elif 'A' <= ch <= 'M':
-            decrypted += shift_char(ch, shift1)
-        elif 'N' <= ch <= 'Z':
-            decrypted += shift_char(ch, -(shift2 ** 2))
-        else:
-            decrypted += ch
-
-    return decrypted
-
-##Decryption Function
-
-def decrypt_text(text, shift1, shift2):
-    decrypted = ""
-
-    for ch in text:
-        if 'a' <= ch <= 'm':
-            decrypted += shift_char(ch, -(shift1 * shift2))
-        elif 'n' <= ch <= 'z':
-            decrypted += shift_char(ch, shift1 + shift2)
-        elif 'A' <= ch <= 'M':
-            decrypted += shift_char(ch, shift1)
-        elif 'N' <= ch <= 'Z':
-            decrypted += shift_char(ch, -(shift2 ** 2))
-        else:
-            decrypted += ch
-
-    return decrypted
-
-
-
-##File Encryption Function
-
-def encrypt_file(input_file, output_file, shift1, shift2):
-    with open(input_file, "r", encoding="utf-8") as f:
-        raw_text = f.read()
-
-    encrypted = encrypt_text(raw_text, shift1, shift2)
-
-    with open(output_file, "w", encoding="utf-8") as f:
-        f.write(encrypted)
-
-    print(f"Encrypted text written to {output_file}")
-    
-Verification Function
-def verify_files(original_file, decrypted_file):
-    with open(original_file, "r", encoding="utf-8") as f:
-        original_text = f.read()
-
-    with open(decrypted_file, "r", encoding="utf-8") as f:
-        decrypted_text = f.read()
-
-    if original_text == decrypted_text:
-        print("Verification successful: Decrypted text matches the original.")
-    else:
-        print("Verification failed: Decrypted text does NOT match the original.")
-
-##Main Function
-def main():
-    try:
-        shift1 = int(input("Enter shift1: "))
-        shift2 = int(input("Enter shift2: "))
-    except ValueError:
-        print("Please enter valid integer values for shift1 and shift2.")
+    if not os.path.exists(input_file):
+        print("Input file not found:", input_file)
         return
 
-    raw_file = "raw_text.txt"
-    encrypted_file = "encrypted_text.txt"
-    decrypted_file = "decrypted_text.txt"
+    with open(input_file) as f:
+        lines = f.readlines()
 
-    encrypt_file(raw_file, encrypted_file, shift1, shift2)
-    decrypt_file(encrypted_file, decrypted_file, shift1, shift2)
-    verify_files(raw_file, decrypted_file)
+    out = open(output_file, "w")
 
-   ## Program Execution
-if __name__ == "__main__":
-    main()
-    
-        
+    for line in lines:
 
+        expr = line.strip()
+
+        if expr == "":
+            continue
+
+        try:
+
+            tokens = tokenize(expr)
+
+            parser = Parser(tokens)
+
+            tree = parser.parse()
+
+            result = evaluate(tree)
+
+            tree_str = tree_to_string(tree)
+
+            token_str = " ".join(
+                [f"[{t[0]}:{t[1]}]" if t[1] else "[END]" for t in tokens]
+            )
+
+            if isinstance(result, float):
+                if result.is_integer():
+                    result = int(result)
+                else:
+                    result = round(result, 4)
+
+        except:
+
+            tree_str = "ERROR"
+            token_str = "ERROR"
+            result = "ERROR"
+
+        out.write(f"Input: {expr}\n")
+        out.write(f"Tree: {tree_str}\n")
+        out.write(f"Tokens: {token_str}\n")
+        out.write(f"Result: {result}\n\n")
+
+    out.close()
+
+    print("Finished. Check output.txt")
+
+
+# run program
+evaluate_file()
